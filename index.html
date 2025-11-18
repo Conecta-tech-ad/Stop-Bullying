@@ -2,16 +2,53 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Login - StopBullying</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Stop Bullying</title>
 </head>
 <body>
-    <h1>StopBullying</h1>
+
     <h2>Login</h2>
 
-    <form method="POST" action="backend/login.php">
-        <input type="email" name="email" placeholder="Email" required><br><br>
-        <input type="password" name="senha" placeholder="Senha" required><br><br>
-        <button type="submit">Entrar</button>
-    </form>
+    <label>Email:</label><br>
+    <input id="email" type="email"><br><br>
+
+    <label>Senha:</label><br>
+    <input id="senha" type="password"><br><br>
+
+    <button onclick="login()">Entrar</button>
+
+    <p id="mensagem"></p>
+
+<script>
+    const usuarios = [
+        { email: "bexebel", senha: "Gabi", tipo: "admin" },
+        { email: "Thony", senha: "Brat", tipo: "admin" },
+        { email: "joao@stop.com", senha: "senha123", tipo: "aluno" }
+    ];
+
+    function login() {
+        const email = document.getElementById("email").value.trim();
+        const senha = document.getElementById("senha").value.trim();
+        const msg = document.getElementById("mensagem");
+        
+        const usuarioEncontrado = usuarios.find(u => u.email === email && u.senha === senha);
+
+        if (usuarioEncontrado) {
+            msg.textContent = "Login realizado com sucesso!";
+            localStorage.setItem("usuarioLogado", JSON.stringify(usuarioEncontrado));
+            
+            setTimeout(() => {
+                if (usuarioEncontrado.tipo === "admin") {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "aluno.html";
+                }
+            }, 800);
+        } else {
+            msg.textContent = "E-mail ou senha incorretos!";
+        }
+    }
+</script>
+
 </body>
 </html>
