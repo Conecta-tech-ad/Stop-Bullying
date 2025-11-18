@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Aluno</title>
+</head>
+<body>
+
+    <h1>Bem-vindo, aluno!</h1>
+
+    <p>Digite sua denúncia:</p>
+    <textarea id="denuncia" rows="5" cols="30"></textarea><br><br>
+
+    <button onclick="salvarDenuncia()">Enviar denúncia</button>
+    <p id="status"></p>
+
+    <button onclick="logout()">Sair</button>
+
+<script>
+    const user = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (!user || user.tipo !== "aluno") {
+        alert("Acesso negado!");
+        window.location.href = "index.html";
+    }
+
+    function salvarDenuncia() {
+        const texto = document.getElementById("denuncia").value.trim();
+        const status = document.getElementById("status");
+
+        if (texto === "") {
+            status.textContent = "Escreva algo antes de enviar.";
+            return;
+        }
+
+        let denuncias = JSON.parse(localStorage.getItem("denuncias")) || [];
+        denuncias.push({ aluno: user.email, texto: texto, data: new Date().toLocaleString() });
+
+        localStorage.setItem("denuncias", JSON.stringify(denuncias));
+
+        status.textContent = "Denúncia enviada com sucesso!";
+        document.getElementById("denuncia").value = "";
+    }
+
+    function logout(){
+        localStorage.removeItem("usuarioLogado");
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>
