@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Denúncias</title>
+</head>
+<body>
+
+    <h1>Denúncias registradas</h1>
+    <div id="lista"></div>
+    <br>
+    <button onclick="logout()">Sair</button>
+
+<script>
+    const user = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!user || user.tipo !== "admin") {
+        alert("Acesso negado!");
+        window.location.href = "index.html";
+    }
+
+    const lista = JSON.parse(localStorage.getItem("denuncias")) || [];
+    const container = document.getElementById("lista");
+
+    if (lista.length === 0) {
+        container.innerHTML = "<p>Nenhuma denúncia enviada ainda.</p>";
+    } else {
+        lista.forEach((d, i) => {
+            container.innerHTML += `<p><strong>${i+1}.</strong> ${d.texto}<br><small>Aluno: ${d.aluno} • ${d.data}</small><hr></p>`;
+        });
+    }
+
+    function logout(){
+        localStorage.removeItem("usuarioLogado");
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>
