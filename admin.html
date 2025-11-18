@@ -1,0 +1,29 @@
+<?php
+session_start();
+if (!isset($_SESSION['id'])) { header("Location: index.html"); exit; }
+if ($_SESSION['role'] !== 'admin') { header("Location: dashboard.html"); exit; }
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel ADM</title>
+</head>
+<body>
+<h1>Painel Administrativo</h1>
+<a href="backend/logout.php">Sair</a>
+
+<h2>Todas as Denúncias</h2>
+<ul id="lista"></ul>
+
+<script>
+fetch("backend/listar_admin.php")
+.then(r=>r.json())
+.then(data=>{
+    document.getElementById("lista").innerHTML = 
+        data.map(d=>`<li><b>${d.nome}:</b> ${d.texto}</li>`).join("");
+});
+</script>
+
+</body>
+</html>
